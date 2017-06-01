@@ -1,6 +1,8 @@
 "use strict";
 import * as parser from 'argv-parser';
 import * as defaultInputSchema from './inputSchema';
+import InputModel from './../model/InputModel';
+import IInputModel from './../model/IInputModel';
 
 export default class InputParser
 {
@@ -14,16 +16,18 @@ export default class InputParser
     public constructor(argv : Array<string>)
     {
         this.rawArgv = argv;
-        this.parse();
     }
 
-    private parse()
+    public getModel() : IInputModel
     {
-        let data = parser.parse(this.rawArgv, {
+        let data : any = parser.parse(this.rawArgv, {
             rules: defaultInputSchema.default
         });
 
-        console.log(data);
+        let inputModel : IInputModel = new InputModel();
+        inputModel.setFileName(data.parsed.file);
+
+        return inputModel;
     }
 
 
