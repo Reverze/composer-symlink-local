@@ -63,6 +63,16 @@ class CommandModel
         return this.name;
     }
 
+    /**
+     * Gets command's sequences
+     * @returns {Array<CommandSequenceModel>}
+     * @constructor
+     */
+    get Sequences() : Array<CommandSequenceModel>
+    {
+        return this.sequences;
+    }
+
 }
 
 export default CommandModel;
