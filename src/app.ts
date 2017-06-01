@@ -2,7 +2,9 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import * as validator from 'validator';
-import InputParser from './input/parser';
+import InputParser from './input/InputParser';
+import IInputModel from './model/IInputModel';
+import ConfigReader from './config/ConfigReader';
 
 export default class Application
 {
@@ -11,6 +13,12 @@ export default class Application
      * @type {string}
      */
     private currentWorkingDirectory : string = null;
+
+    /**
+     * CLI input model
+     * @type {IInputModel}
+     */
+    private inputModel : IInputModel = null;
 
     public constructor(workingDirectoryPath : string)
     {
@@ -41,6 +49,14 @@ export default class Application
     public execute(args : Array<string>) : void
     {
         let parser : InputParser = new InputParser(args);
+        let inputModel : IInputModel = parser.getModel();
+
+        inputModel.setFilePath(path.join(this.currentWorkingDirectory,
+            inputModel.getFileName()));
+
+        let configReader : ConfigReader = new ConfigReader(this.currentWorkingDirectory);
+        configReader.load(inputModel);
+
 
     }
 
