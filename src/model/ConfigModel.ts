@@ -1,7 +1,20 @@
 "use strict";
+import CommandModel from './CommandModel';
+import SpaceModel from './SpaceModel';
 
 class ConfigModel
 {
+    /**
+     * Stores defiend commands
+     * @type {CommandModel[]}
+     */
+    private commands : Array<CommandModel> = Array();
+
+    /**
+     * Stores defined spaces
+     * @type {SpaceModel[]}
+     */
+    private spaces : Array<SpaceModel> = Array();
 
     public constructor()
     {
@@ -13,18 +26,22 @@ class ConfigModel
                     $attachSymlinks: "$space.swayframework-dependencies"
                 }
             },
-            space: {
-                name: "swayframework-dependencies",
-                rootDir: "./vendor/rev",
-                map: [
-                    {
-                        source: "/home/konrad/projects/console",
-                        linkName: "swayframework-console"
-                    }
-                ]
-            }
+            spaces: [
+                {
+                    name: "swayframework-dependencies",
+                    rootDir: "./vendor/rev",
+                    map: [
+                        {
+                            source: "/home/konrad/projects/console",
+                            linkName: "swayframework-console"
+                        }
+                    ]
+                }
+            ]
         };
     }
+
+
 
 }
 
