@@ -17,6 +17,25 @@ class ModelCollection<T extends IModel> implements IModelCollection<T> {
     }
 
     /**
+     * Gets number of elements in collection
+     * @returns {number}
+     * @constructor
+     */
+    get Count() : number
+    {
+        return this.modelArray.length;
+    }
+
+    /**
+     * Checks if collection is empty
+     * @returns {boolean}
+     */
+    public isEmpty() : boolean
+    {
+        return this.modelArray.length <= 0;
+    }
+
+    /**
      * @inheritDoc
      */
     public push(modelInstance: T): void
@@ -31,6 +50,49 @@ class ModelCollection<T extends IModel> implements IModelCollection<T> {
     {
         let index : number = this.modelArray.findIndex(model => modelInstance === model);
         this.modelArray.splice(index, 1);
+    }
+
+    /**
+     * Finds all
+     * @param callback
+     * @returns {ModelCollection<T>}
+     */
+    public findAll(callback : Function) : ModelCollection<T>
+    {
+        let subCollection = new ModelCollection<T>();
+
+        for(let model of this.modelArray){
+            if (callback(model)){
+                subCollection.push(model)
+            }
+        }
+
+        return subCollection;
+    }
+
+    /**
+     *
+     * @param callback
+     * @returns {any}
+     */
+    public findOne(callback : Function) : T|null
+    {
+        for (let model of this.modelArray){
+            if (callback(model)){
+                return model;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts collection into array
+     * @returns {Array<T>}
+     */
+    public toArray() : Array<T>
+    {
+        return this.modelArray;
     }
 
     public * each()
