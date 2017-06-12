@@ -1,6 +1,7 @@
 "use strict";
 import * as validator from 'validator';
 import MapNodeModel from './MapNodeModel';
+import ModelCollection from './collection/ModelCollection';
 
 class MapModel
 {
@@ -8,7 +9,12 @@ class MapModel
      * Map's nodes
      * @type {MapNodeModel[]}
      */
-    private nodes : Array<MapNodeModel> = Array();
+    private nodes : ModelCollection<MapNodeModel> = null;
+
+    public constructor()
+    {
+        this.nodes = new ModelCollection<MapNodeModel>();
+    }
 
     /**
      * Adds node to map
@@ -16,8 +22,9 @@ class MapModel
      */
     public addNode(mapNode : MapNodeModel)
     {
+
         if (!(mapNode instanceof MapNodeModel)){
-            throw new Error("Mapnode is not instanceof 'MapNodeModel'");
+            throw new Error("Node is not instanceof 'MapNodeModel'");
         }
 
         this.nodes.push(mapNode);
@@ -25,10 +32,10 @@ class MapModel
 
     /**
      * Gets map's nodes
-     * @returns {Array<MapNodeModel>}
+     * @returns {ModelCollection<MapNodeModel>}
      * @constructor
      */
-    get Nodes() : Array<MapNodeModel>
+    get Nodes() : ModelCollection<MapNodeModel>
     {
         return this.nodes;
     }
