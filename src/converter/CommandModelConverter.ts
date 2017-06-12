@@ -1,6 +1,11 @@
+/**
+ * This file is a prt of ComposerSymlinkLocal
+ * @Author Reverze <hawkmedia24@gmail.com>
+ */
 "use strict";
 import CommandModel from './../model/CommandModel';
 import CommandSequenceModel from './../model/CommandSequenceModel';
+import ModelCollection from './../model/collection/ModelCollection';
 
 class CommandModelConverter
 {
@@ -10,13 +15,13 @@ class CommandModelConverter
     }
 
     /**
-     * Converts to command collection
+     * Converts raw config model to model collection
      * @param commands
-     * @returns {Array<CommandModel>}
+     * @returns {ModelCollection<CommandModel>}
      */
-    public convertToModelCollection(commands : any) : Array<CommandModel>
+    public convertToModelCollection(commands : any) : ModelCollection<CommandModel>
     {
-        let commandCollection : Array<CommandModel> = Array();
+        let commandCollection : ModelCollection<CommandModel> = new ModelCollection<CommandModel>();
 
         Object.keys(commands).forEach(commandName => {
             let command : CommandModel = new CommandModel();
@@ -24,9 +29,6 @@ class CommandModelConverter
 
             let rawSequences : any = commands[commandName];
 
-            /**
-             * Fetches command's sequences
-             */
             Object.keys(rawSequences).forEach(sequenceExecutorName => {
                 let sequence : CommandSequenceModel = new CommandSequenceModel();
                 sequence.ExecutorName = sequenceExecutorName;
@@ -35,8 +37,8 @@ class CommandModelConverter
             });
 
             commandCollection.push(command);
-
         });
+
 
         return commandCollection;
     }
