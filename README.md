@@ -1,5 +1,5 @@
 # ComposerSymlinkLocal
-This package is expertimental.
+This package is experimental.
 
 ## Description
 *ComposerSymlinkLocal* helps you to developer composer's packages 
