@@ -11,6 +11,10 @@ let inputSchema = {
             }
             return value;
         }
+    },
+    init: {
+        type: Boolean,
+        value: false
     }
 };
 

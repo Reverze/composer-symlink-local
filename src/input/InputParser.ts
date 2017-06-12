@@ -26,6 +26,9 @@ export default class InputParser
 
         let inputModel : IInputModel = new InputModel();
         inputModel.setFileName(data.parsed.file);
+        inputModel.setInitState(data.parsed.init);
+
+        console.log(inputModel);
 
         return inputModel;
     }

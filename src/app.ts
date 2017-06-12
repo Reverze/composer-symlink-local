@@ -65,6 +65,7 @@ export default class Application
         inputModel.setFilePath(path.resolve(Application.currentWorkingDirectory,
             inputModel.getFileName()));
 
+
         let configReader : ConfigReader = new ConfigReader(Application.currentWorkingDirectory);
         configReader.load(inputModel);
 

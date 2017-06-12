@@ -15,6 +15,12 @@ class InputModel implements IInputModel
      */
     private filePath : string = null;
 
+    /**
+     * Determines if flag 'init'' was activated
+     * @type {boolean}
+     */
+    private init : boolean = false;
+
     public constructor()
     {
 
@@ -39,6 +45,15 @@ class InputModel implements IInputModel
     }
 
     /**
+     * Sets 'init' state
+     * @param initState
+     */
+    public setInitState(initState : boolean) : void
+    {
+        this.init = initState;
+    }
+
+    /**
      * Gets file's name
      * @returns {string}
      */
@@ -54,6 +69,15 @@ class InputModel implements IInputModel
     public getFilePath() : string
     {
         return this.filePath;
+    }
+
+    /**
+     * Gets 'init' state
+     * @returns {boolean}
+     */
+    public getInitState() : boolean
+    {
+        return this.init;
     }
 }
 
