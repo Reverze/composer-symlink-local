@@ -9,17 +9,12 @@ import ModelCollection from './../model/collection/ModelCollection';
 
 class CommandModelConverter
 {
-    public constructor()
-    {
-
-    }
-
     /**
      * Converts raw config model to model collection
      * @param commands
      * @returns {ModelCollection<CommandModel>}
      */
-    public convertToModelCollection(commands : any) : ModelCollection<CommandModel>
+    public static convertToModelCollection(commands : any) : ModelCollection<CommandModel>
     {
         let commandCollection : ModelCollection<CommandModel> = new ModelCollection<CommandModel>();
 
