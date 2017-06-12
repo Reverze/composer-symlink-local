@@ -53,6 +53,25 @@ class ModelCollection<T extends IModel> implements IModelCollection<T> {
     }
 
     /**
+     *
+     * @param callback
+     * @returns {number}
+     */
+    public dropWhere(callback : Function) : number
+    {
+        let droppedModels : number = 0;
+
+        for (let modelIndex in this.modelArray){
+            let model : T = this.modelArray[modelIndex];
+            if (callback(model)){
+                this.modelArray.splice(Number(modelIndex), 1);
+                droppedModels++;
+            }
+        }
+        return droppedModels;
+    }
+
+    /**
      * Finds all
      * @param callback
      * @returns {ModelCollection<T>}
