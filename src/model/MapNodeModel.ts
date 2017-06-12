@@ -1,3 +1,7 @@
+/**
+ * This file is a part of ComposerSymlinkLocal
+ * @Author Reverze <hawkmedia24@gmail.com>
+ */
 "use strict";
 import * as validator from 'validator';
 

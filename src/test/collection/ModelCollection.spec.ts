@@ -68,4 +68,38 @@ describe("ModelCollection Test", () => {
 
         expect(count).to.equal(2);
     });
+
+    it("should find all models", () => {
+        let collection = new ModelCollection<ExampleModel>();
+        let modelInstance = new ExampleModel();
+        modelInstance.Name = "das";
+        let modelInstanceTwo = new ExampleModel();
+        modelInstanceTwo.Name = "das";
+        collection.push(modelInstance);
+        collection.push(modelInstanceTwo);
+
+        let resultCollection = collection.findAll(model => model.Name === "das");
+
+        expect(resultCollection.Count).to.equal(2);
+
+        modelInstanceTwo.Name = "d";
+        resultCollection = collection.findAll(model => model.Name === "das");
+
+        expect(resultCollection.Count).to.equal(1);
+    });
+
+    it("should drop one model", () => {
+        let collection = new ModelCollection<ExampleModel>();
+        let modelInstance = new ExampleModel();
+        modelInstance.Name = "das";
+        let modelInstanceTwo = new ExampleModel();
+        modelInstanceTwo.Name = "die";
+        collection.push(modelInstance);
+        collection.push(modelInstanceTwo);
+
+        let droppedModelCounter = collection.dropWhere(model => model.Name === "das");
+
+        expect(droppedModelCounter).to.equal(1);
+        expect(collection.Count).to.equal(1);
+    });
 });

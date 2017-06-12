@@ -12,7 +12,7 @@ export default class Application
      * Current application working directory
      * @type {string}
      */
-    private currentWorkingDirectory : string = null;
+    private static currentWorkingDirectory : string = __dirname;
 
     /**
      * CLI input model
@@ -23,7 +23,18 @@ export default class Application
     public constructor(workingDirectoryPath : string)
     {
         this.validateWorkingDirectoryPath(workingDirectoryPath);
-        this.currentWorkingDirectory = workingDirectoryPath;
+
+        Application.currentWorkingDirectory = workingDirectoryPath;
+    }
+
+    /**
+     * Gets current working directory path
+     * @returns {string}
+     * @constructor
+     */
+    static get WorkingDirectory() : string
+    {
+        return Application.currentWorkingDirectory;
     }
 
     /**
@@ -51,10 +62,10 @@ export default class Application
         let parser : InputParser = new InputParser(args);
         let inputModel : IInputModel = parser.getModel();
 
-        inputModel.setFilePath(path.join(this.currentWorkingDirectory,
+        inputModel.setFilePath(path.resolve(Application.currentWorkingDirectory,
             inputModel.getFileName()));
 
-        let configReader : ConfigReader = new ConfigReader(this.currentWorkingDirectory);
+        let configReader : ConfigReader = new ConfigReader(Application.currentWorkingDirectory);
         configReader.load(inputModel);
 
 

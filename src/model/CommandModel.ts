@@ -1,6 +1,7 @@
 "use strict";
 import CommandSequenceModel from './CommandSequenceModel';
 import * as validator from 'validator';
+import ModelCollection from './collection/ModelCollection';
 
 class CommandModel
 {
@@ -12,14 +13,14 @@ class CommandModel
 
     /**
      * Stores command execute sequences
-     * @type {CommandSequenceModel[]}
+     * @type {ModelCollection<CommandSequenceModel>}
      */
-    private sequences : Array<CommandSequenceModel> = Array();
+    private sequences : ModelCollection<CommandSequenceModel> = null;
 
 
     public constructor()
     {
-
+        this.sequences = new ModelCollection<CommandSequenceModel>();
     }
 
     /**
@@ -40,17 +41,17 @@ class CommandModel
      * @param name
      * @constructor
      */
-    set Name(name : string)
+    set Name(commandName : string)
     {
-        if (name === null || name == undefined){
+        if (commandName === null || commandName == undefined){
             throw new Error("Command's name is not specified");
         }
 
-        if (validator.isEmpty(name)){
+        if (validator.isEmpty(commandName)){
             throw new Error("Command's name is empty!");
         }
 
-        this.name = name.toLowerCase();
+        this.name = commandName.toLowerCase();
     }
 
     /**
@@ -65,10 +66,10 @@ class CommandModel
 
     /**
      * Gets command's sequences
-     * @returns {Array<CommandSequenceModel>}
+     * @returns {ModelCollection<CommandSequenceModel>}
      * @constructor
      */
-    get Sequences() : Array<CommandSequenceModel>
+    get Sequences() : ModelCollection<CommandSequenceModel>
     {
         return this.sequences;
     }
