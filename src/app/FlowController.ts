@@ -11,6 +11,7 @@ class FlowController
      */
     private workingDirectoryPath : string = null;
 
+
     /**
      * Standard output
      * @type {IStandardOutput}
