@@ -15,6 +15,12 @@ let inputSchema = {
     init: {
         type: Boolean,
         value: false
+    },
+    pwd: {
+        type: String,
+        value: (value, parsed, tool) => {
+            return value;
+        }
     }
 };
 
