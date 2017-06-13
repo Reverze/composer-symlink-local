@@ -21,6 +21,12 @@ class InputModel implements IInputModel
      */
     private init : boolean = false;
 
+    /**
+     * Custom working directory path
+     * @type {string}
+     */
+    private pwd : string = null;
+
     public constructor()
     {
 
@@ -54,6 +60,15 @@ class InputModel implements IInputModel
     }
 
     /**
+     * Sets custom working directory's path
+     * @param customWorkingDirectoryPath
+     */
+    public setPwd(customWorkingDirectoryPath : string) : void
+    {
+        this.pwd = customWorkingDirectoryPath;
+    }
+
+    /**
      * Gets file's name
      * @returns {string}
      */
@@ -78,6 +93,15 @@ class InputModel implements IInputModel
     public getInitState() : boolean
     {
         return this.init;
+    }
+
+    /**
+     * Gets custom working directory's path
+     * @returns {string}
+     */
+    public getPwd() : string|null
+    {
+        return this.pwd;
     }
 }
 
