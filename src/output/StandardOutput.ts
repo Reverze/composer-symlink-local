@@ -1,4 +1,5 @@
 import IStandardOutput from './IStandardOutput';
+import * as so from './output';
 
 class StandardOutput implements IStandardOutput
 {
@@ -13,7 +14,7 @@ class StandardOutput implements IStandardOutput
      */
     public print(message : string) : void
     {
-        console.log(message);
+        so.print(message);
     }
 
     /**
@@ -22,7 +23,7 @@ class StandardOutput implements IStandardOutput
      */
     public warning(message : string) : void
     {
-        this.print("\033[0;33m" + message + "\033[0m ");
+        so.warning(message);
     }
 
     /**
@@ -31,7 +32,7 @@ class StandardOutput implements IStandardOutput
      */
     public notice(message : string) : void
     {
-        this.print("\033[0;35m" + message + "\033[0m ");
+        so.notice(message);
     }
 
     /**
@@ -40,7 +41,7 @@ class StandardOutput implements IStandardOutput
      */
     public info(message : string) : void
     {
-        this.print("\033[1;34m" + message + "\033[0m ");
+        so.info(message);
     }
 
     /**
@@ -49,7 +50,7 @@ class StandardOutput implements IStandardOutput
      */
     public error(message : string) : void
     {
-        this.print("\033[0;31m" + message + "\033[0m ");
+        so.error(message);
     }
 
     /**
@@ -58,7 +59,7 @@ class StandardOutput implements IStandardOutput
      */
     public success(message : string) : void
     {
-        this.print("\033[0;32m" + message + "\033[0m ");
+        so.success(message);
     }
 
 
