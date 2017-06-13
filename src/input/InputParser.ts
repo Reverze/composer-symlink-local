@@ -28,8 +28,6 @@ export default class InputParser
         inputModel.setFileName(data.parsed.file);
         inputModel.setInitState(data.parsed.init);
 
-        console.log(inputModel);
-
         return inputModel;
     }
 
