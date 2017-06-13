@@ -19,9 +19,6 @@ describe("MapModelConverter Test", () => {
 
         let map : MapModel = MapModelConverter.convertToMap(rawNodes);
 
-        for(let node of map.Nodes.each()){
-            console.log(node);
-        }
 
         expect(map.Nodes.Count).to.equal(2);
     });
