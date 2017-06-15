@@ -24,7 +24,7 @@ class MapModelConverter
             MapModelConverter.validateRawNode(rawNode);
 
             node.LinkName = rawNode.linkName;
-            node.SourceDirectoryPath = path.resolve(Application, rawNode.source);
+            node.SourceDirectoryPath = path.resolve(Application.WorkingDirectory, rawNode.source);
             map.addNode(node);
         }
 
