@@ -4,6 +4,7 @@ import FlowController from './../app/FlowController';
 import CustomPwdEventArgs from './../event/core/args/CustomPwdEventArgs';
 import * as fs from 'fs';
 import * as validator from 'validator';
+import * as sprintf from 'sprintf';
 
 /**
  * This executor is responsible to validate and save custom working directory's path
@@ -36,6 +37,7 @@ class CustomPwdExecutor extends Executor
         }
 
         sender.WorkingDirectory = customcwd;
+        sender.Output.info(sprintf("Setting working directory to: '%s'", customcwd));
 
     }
 }
