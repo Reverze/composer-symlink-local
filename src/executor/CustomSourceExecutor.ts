@@ -7,6 +7,7 @@ import Executor from './Executor';
 import CustomSourceEventArgs from './../event/core/args/CustomSourceEventArgs';
 import FlowController from './../app/FlowController';
 import * as validator from 'validator';
+import * as sprintf from 'sprintf';
 
 class CustomSourceExecutor extends Executor
 {
@@ -27,6 +28,7 @@ class CustomSourceExecutor extends Executor
         }
 
         sender.SourceFileName = customSourceName;
+        sender.Output.info(sprintf("Setting source file's name to: '%s'", customSourceName));
     }
 }
 
