@@ -2,12 +2,10 @@
 
 interface IInputModel
 {
-    getFileName() : string;
-    getFilePath() : string;
+    getSourceName() : string;
     getInitState() : boolean;
     getPwd() : string|null;
-    setFileName(fileName : string) : void;
-    setFilePath(filePath : string) : void;
+    setSourceName(sourceName : string) : void;
     setInitState(initState : boolean) : void;
     setPwd(customWorkingDirectoryPath : string) : void;
 }

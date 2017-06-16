@@ -4,16 +4,10 @@ import IInputModel from './IInputModel';
 class InputModel implements IInputModel
 {
     /**
-     * File's name
+     * Source's name
      * @type {string}
      */
-    private fileName : string = null;
-
-    /**
-     * File's path
-     * @type {string}
-     */
-    private filePath : string = null;
+    private sourceName : string = null;
 
     /**
      * Determines if flag 'init'' was activated
@@ -34,20 +28,11 @@ class InputModel implements IInputModel
 
     /**
      * Sets file's name
-     * @param fileName
+     * @param sourceName
      */
-    public setFileName(fileName : string) : void
+    public setSourceName(sourceName : string) : void
     {
-        this.fileName = fileName;
-    }
-
-    /**
-     * Sets file's path
-     * @param filePath
-     */
-    public setFilePath(filePath : string) : void
-    {
-        this.filePath = filePath;
+        this.sourceName = sourceName;
     }
 
     /**
@@ -72,18 +57,9 @@ class InputModel implements IInputModel
      * Gets file's name
      * @returns {string}
      */
-    public getFileName() : string
+    public getSourceName() : string
     {
-        return this.fileName;
-    }
-
-    /**
-     * Gets file's path
-     * @returns {string}
-     */
-    public getFilePath() : string
-    {
-        return this.filePath;
+        return this.sourceName;
     }
 
     /**
