@@ -1,15 +1,10 @@
 "use strict";
 
-let defaultConfigFileName = "composer.symlink.json";
-
 let inputSchema = {
-    file: {
+    source: {
         type: String,
-        value: (value, parsed, tool) => {
-            if (value === null || value === undefined){
-                return defaultConfigFileName;
-            }
-            return value;
+        value : (value, parsed, tool) => {
+            return value === null || value === undefined ? null : value;
         }
     },
     init: {
@@ -19,7 +14,7 @@ let inputSchema = {
     pwd: {
         type: String,
         value: (value, parsed, tool) => {
-            return value;
+            return value === null || value === undefined ? null : value;
         }
     }
 };
