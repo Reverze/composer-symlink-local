@@ -4,7 +4,6 @@ import * as fs from 'fs';
 import * as validator from 'validator';
 import InputParser from './input/InputParser';
 import IInputModel from './model/IInputModel';
-import ConfigReader from './config/ConfigReader';
 import EventServer from './event/EventServer';
 import EventListener from './event/EventListener';
 import EventArgs from './event/EventArgs';
@@ -13,12 +12,14 @@ import FlowController from './app/FlowController';
 /**
  * @events.core
  */
+import Event from './event/Event';
 import FlagEvent from './event/core/FlagEvent';
 import OptionEvent from './event/core/OptionEvent';
 
 import InitFlagEvent from './event/core/InitFlagEvent';
 import PwdOptionEvent from './event/core/PwdOptionEvent';
 import SourceOptionEvent from './event/core/SourceOptionEvent';
+import ReadSourceEvent from './event/core/ReadSourceEvent';
 
 /**
  * @executors.core
@@ -26,6 +27,7 @@ import SourceOptionEvent from './event/core/SourceOptionEvent';
 import InitConfigExecutor from './executor/InitConfigExecutor';
 import CustomPwdExecutor from './executor/CustomPwdExecutor';
 import CustomSourceExecutor from './executor/CustomSourceExecutor';
+import ReadSourceExecutor from './executor/ReadSourceExecutor';
 
 /**
  * @events_args.core
@@ -100,6 +102,7 @@ export default class Application
         EventServer.define<FlagEvent>(InitFlagEvent);
         EventServer.define<OptionEvent>(PwdOptionEvent);
         EventServer.define<OptionEvent>(SourceOptionEvent);
+        EventServer.define<Event>(ReadSourceEvent);
     }
 
     public registerCoreEventWatchers()
@@ -121,6 +124,7 @@ export default class Application
             eventListener.Receiver = new CustomSourceExecutor().Worker;
             return eventListener;
         })());
+
         /**
          * Should be executed on '--init'
          */
@@ -130,6 +134,14 @@ export default class Application
             return eventListener;
         })());
 
+        /**
+         * Should be executed to read config file
+         */
+        EventServer.watch<Event>(ReadSourceEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new ReadSourceExecutor().Worker;
+            return eventListener;
+        })());
 
     }
 
@@ -142,9 +154,9 @@ export default class Application
         let parser : InputParser = new InputParser(args);
         let inputModel : IInputModel = parser.getModel();
 
-        /*inputModel.setFilePath(path.resolve(Application.currentWorkingDirectory,
-            inputModel.getFileName()));*/
-
+        /**
+         * When user wants to define custom source file (config file) name
+         */
         if (inputModel.getSourceName() !== null){
             let args : CustomSourceEventArgs = new CustomSourceEventArgs(inputModel.getSourceName());
             EventServer.trigger<OptionEvent>(SourceOptionEvent, this.flow, args);
@@ -158,14 +170,17 @@ export default class Application
             EventServer.trigger<OptionEvent>(PwdOptionEvent, this.flow, args);
         }
 
+        /**
+         * If user passed '--init', example config file should be created
+         */
         if (inputModel.getInitState() === true){
             EventServer.trigger<FlagEvent>(InitFlagEvent, this.flow, new EventArgs());
         }
 
-        /*
-        let configReader : ConfigReader = new ConfigReader(Application.currentWorkingDirectory);
-        configReader.load(inputModel);*/
-
+        /**
+         * If everything ok, reads config file
+         */
+        EventServer.trigger<Event>(ReadSourceEvent, this.flow, new EventArgs());
 
     }
 
