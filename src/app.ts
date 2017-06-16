@@ -18,17 +18,20 @@ import OptionEvent from './event/core/OptionEvent';
 
 import InitFlagEvent from './event/core/InitFlagEvent';
 import PwdOptionEvent from './event/core/PwdOptionEvent';
+import SourceOptionEvent from './event/core/SourceOptionEvent';
 
 /**
  * @executors.core
  */
 import InitConfigExecutor from './executor/InitConfigExecutor';
 import CustomPwdExecutor from './executor/CustomPwdExecutor';
+import CustomSourceExecutor from './executor/CustomSourceExecutor';
 
 /**
  * @events_args.core
  */
 import CustomPwdEventArgs from './event/core/args/CustomPwdEventArgs';
+import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
 
 export default class Application
 {
@@ -96,10 +99,28 @@ export default class Application
     {
         EventServer.define<FlagEvent>(InitFlagEvent);
         EventServer.define<OptionEvent>(PwdOptionEvent);
+        EventServer.define<OptionEvent>(SourceOptionEvent);
     }
 
     public registerCoreEventWatchers()
     {
+        /**
+         * Should be executed on '--pwd [path]'
+         */
+        EventServer.watch<OptionEvent>(PwdOptionEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new CustomPwdExecutor().Worker;
+            return eventListener;
+        })());
+
+        /**
+         * Should be executed on '--source [fileName]'
+         */
+        EventServer.watch<OptionEvent>(SourceOptionEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new CustomSourceExecutor().Worker;
+            return eventListener;
+        })());
         /**
          * Should be executed on '--init'
          */
@@ -109,14 +130,7 @@ export default class Application
             return eventListener;
         })());
 
-        /**
-         * Should be executed on '--pwd [path]'
-         */
-        EventServer.watch<OptionEvent>(PwdOptionEvent, (() => {
-            let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new CustomPwdExecutor().Worker;
-            return eventListener;
-        })());
+
     }
 
 
@@ -128,8 +142,13 @@ export default class Application
         let parser : InputParser = new InputParser(args);
         let inputModel : IInputModel = parser.getModel();
 
-        inputModel.setFilePath(path.resolve(Application.currentWorkingDirectory,
-            inputModel.getFileName()));
+        /*inputModel.setFilePath(path.resolve(Application.currentWorkingDirectory,
+            inputModel.getFileName()));*/
+
+        if (inputModel.getSourceName() !== null){
+            let args : CustomSourceEventArgs = new CustomSourceEventArgs(inputModel.getSourceName());
+            EventServer.trigger<OptionEvent>(SourceOptionEvent, this.flow, args);
+        }
 
         /**
          * When user wants to define custom working directory

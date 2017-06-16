@@ -26,6 +26,7 @@
     "argv-parser": "^0.1.4",
     "fs": "0.0.1-security",
     "path": "^0.12.7",
+    "sprintf": "^0.1.5",
     "validator": "^7.0.0"
   },
   "devDependencies": {
