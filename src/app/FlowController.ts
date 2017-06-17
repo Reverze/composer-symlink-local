@@ -1,7 +1,12 @@
+/**
+ * This file is a part of ComposerSymlinkLocal
+ * @Author Reverze <hawkmedia24@gmail.com>
+ */
 "use strict";
 import * as process from 'process';
 import IStandardOutput from './../output/IStandardOutput';
 import StandardOutput from './../output/StandardOutput';
+import ContainerModel from './../model/ContainerModel';
 
 class FlowController
 {
@@ -21,6 +26,7 @@ class FlowController
      * @type {IStandardOutput}
      */
     private standardOutput : IStandardOutput = null;
+
 
     public constructor()
     {
@@ -55,6 +61,19 @@ class FlowController
     get SourceFileName() : string
     {
         return this.sourceFileName;
+    }
+
+    /**
+     * Gets container
+     * @returns {ContainerModel}
+     * @constructor
+     */
+    get Container() : ContainerModel
+    {
+        let container : ContainerModel = new ContainerModel();
+        container.WorkingDirectory = this.workingDirectoryPath;
+
+        return container;
     }
 
     /**
