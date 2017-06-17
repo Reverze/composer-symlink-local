@@ -1,47 +1,70 @@
+/**
+ * This file is a part of ComposerSymlinkLocal
+ * @Author Reverze <hawkmedia24@gmail.com
+ */
 "use strict";
 import CommandModel from './CommandModel';
 import SpaceModel from './SpaceModel';
+import ModelCollection from './collection/ModelCollection';
 
 class ConfigModel
 {
     /**
      * Stores defiend commands
-     * @type {CommandModel[]}
+     * @type {ModelCollection<CommandModel>}
      */
-    private commands : Array<CommandModel> = Array();
+    private commands : ModelCollection<CommandModel> = new ModelCollection<CommandModel>();
 
     /**
      * Stores defined spaces
-     * @type {SpaceModel[]}
+     * @type {ModelCollection<SpaceModel> }
      */
-    private spaces : Array<SpaceModel> = Array();
+    private spaces : ModelCollection<SpaceModel> = new ModelCollection<SpaceModel>();
 
     public constructor()
     {
-        let obj : any = {
-            commands: {
-                update: {
-                    $detachSymlinks: "$space.swayframework-dependencies",
-                    $eval: "composer update",
-                    $attachSymlinks: "$space.swayframework-dependencies"
-                }
-            },
-            spaces: [
-                {
-                    name: "swayframework-dependencies",
-                    rootDir: "./vendor/rev",
-                    map: [
-                        {
-                            source: "/home/konrad/projects/console",
-                            linkName: "swayframework-console"
-                        }
-                    ]
-                }
-            ]
-        };
+
     }
 
+    /**
+     * Adds command
+     * @param command
+     */
+    public addCommand(command : CommandModel) : void
+    {
+        this.commands.push(command);
+    }
 
+    /**
+     * Adds commands
+     * @param commands
+     */
+    public addCommands(commands : ModelCollection<CommandModel>) : void
+    {
+        for(let command of commands.each()){
+            this.commands.push(command);
+        }
+    }
+
+    /**
+     * Adds space
+     * @param space
+     */
+    public addSpace(space : SpaceModel) : void
+    {
+        this.spaces.push(space);
+    }
+
+    /**
+     * Adds spaces
+     * @param spaces
+     */
+    public addSpaces(spaces : ModelCollection<SpaceModel>) : void
+    {
+        for(let space of spaces.each()){
+            this.spaces.push(space);
+        }
+    }
 
 }
 
