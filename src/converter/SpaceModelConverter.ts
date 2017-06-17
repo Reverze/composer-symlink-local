@@ -7,6 +7,7 @@ import ModelCollection from './../model/collection/ModelCollection';
 import SpaceModel from './../model/SpaceModel';
 import MapModel from './../model/MapModel';
 import MapModelConverter from './MapModelConverter';
+import ContainerModel from './../model/ContainerModel';
 import Application from './../app';
 import * as path from 'path';
 
@@ -22,7 +23,7 @@ class SpaceModelConverter
      * @param spaces
      * @returns {ModelCollection<SpaceModel>}
      */
-    public static convertToModelCollection(spaces : Array<any>) : ModelCollection<SpaceModel>
+    public static convertToModelCollection(spaces : Array<any>, container ?: ContainerModel) : ModelCollection<SpaceModel>
     {
         let spaceCollection : ModelCollection<SpaceModel> = new ModelCollection<SpaceModel>();
 
@@ -31,7 +32,7 @@ class SpaceModelConverter
 
             SpaceModelConverter.validateRawSpaceObject(rawSpace);
             space.Name = rawSpace.name;
-            space.DirectoryPath = path.resolve(Application.WorkingDirectory, rawSpace.rootDir);
+            space.DirectoryPath = path.resolve(container ? container.WorkingDirectory : Application.WorkingDirectory, rawSpace.rootDir);
 
             let map : MapModel = MapModelConverter.convertToMap(rawSpace.map);
 

@@ -5,6 +5,7 @@
 "use strict";
 import MapModel from './../model/MapModel';
 import MapNodeModel from './../model/MapNodeModel';
+import ContainerModel from './../model/ContainerModel';
 import Application from './../app';
 import * as path from 'path';
 
@@ -15,7 +16,7 @@ class MapModelConverter
      * @param rawNodes
      * @returns {MapModel}
      */
-    public static convertToMap(rawNodes : Array<any>) : MapModel
+    public static convertToMap(rawNodes : Array<any>, container ?: ContainerModel) : MapModel
     {
         let map : MapModel = new MapModel();
 
@@ -24,7 +25,7 @@ class MapModelConverter
             MapModelConverter.validateRawNode(rawNode);
 
             node.LinkName = rawNode.linkName;
-            node.SourceDirectoryPath = path.resolve(Application.WorkingDirectory, rawNode.source);
+            node.SourceDirectoryPath = path.resolve(container ? container.WorkingDirectory : Application.WorkingDirectory, rawNode.source);
             map.addNode(node);
         }
 

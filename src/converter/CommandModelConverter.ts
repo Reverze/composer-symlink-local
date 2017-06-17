@@ -6,6 +6,7 @@
 import CommandModel from './../model/CommandModel';
 import CommandSequenceModel from './../model/CommandSequenceModel';
 import ModelCollection from './../model/collection/ModelCollection';
+import ContainerModel from './../model/ContainerModel';
 
 class CommandModelConverter
 {
@@ -14,7 +15,7 @@ class CommandModelConverter
      * @param commands
      * @returns {ModelCollection<CommandModel>}
      */
-    public static convertToModelCollection(commands : any) : ModelCollection<CommandModel>
+    public static convertToModelCollection(commands : any, container ?: ContainerModel) : ModelCollection<CommandModel>
     {
         let commandCollection : ModelCollection<CommandModel> = new ModelCollection<CommandModel>();
 
