@@ -3,7 +3,7 @@
  */
 "use strict";
 
-interface IModelCollection<T>
+interface IModelCollection<T> extends IterableIterator<T>
 {
     /**
      * Pushes model instance into collection
@@ -18,6 +18,13 @@ interface IModelCollection<T>
     pull(modelInstance : T) : void;
 
     each();
+
+    toArray() : Array<T>
+
+    merge(collection : IModelCollection<T>);
+
+    next(value ?: any) : IteratorResult<T>;
+
 }
 
 export default IModelCollection;

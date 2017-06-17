@@ -12,6 +12,8 @@ class ModelCollection<T extends IModel> implements IModelCollection<T> {
      */
     private modelArray: Array<T> = new Array<T>();
 
+    private currentPointer : number = 0;
+
     public constructor() {
 
     }
@@ -119,6 +121,35 @@ class ModelCollection<T extends IModel> implements IModelCollection<T> {
         for(let model of this.modelArray){
             yield model;
         }
+    }
+
+    public merge(collection : IModelCollection<T>) : void
+    {
+        for(let model of collection){
+            this.modelArray.push(model);
+        }
+    }
+
+    public next(value ?: any) : IteratorResult<T>
+    {
+        if (this.currentPointer < this.modelArray.length){
+            return {
+                done: false,
+                value: this.modelArray[this.currentPointer++]
+            }
+        }
+        else{
+            this.currentPointer = 0;
+            return {
+                done: true,
+                value: null
+            };
+        }
+    }
+
+    [Symbol.iterator](): IterableIterator<T>
+    {
+        return this;
     }
 
 

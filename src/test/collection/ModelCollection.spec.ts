@@ -67,6 +67,13 @@ describe("ModelCollection Test", () => {
         }
 
         expect(count).to.equal(2);
+        count = 0;
+
+        for(let model of collection)
+        {
+            count++;
+        }
+        expect(count).to.equal(2);
     });
 
     it("should find all models", () => {
