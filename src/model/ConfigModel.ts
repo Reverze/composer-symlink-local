@@ -27,6 +27,26 @@ class ConfigModel
     }
 
     /**
+     * Gets commands collection
+     * @returns {ModelCollection<CommandModel>}
+     * @constructor
+     */
+    get Commands() : ModelCollection<CommandModel>
+    {
+        return this.commands;
+    }
+
+    /**
+     * Gets spaces collection
+     * @returns {ModelCollection<SpaceModel>}
+     * @constructor
+     */
+    get Spaces() : ModelCollection<SpaceModel>
+    {
+        return this.spaces;
+    }
+
+    /**
      * Adds command
      * @param command
      */
