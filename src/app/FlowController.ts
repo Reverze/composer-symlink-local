@@ -7,6 +7,7 @@ import * as process from 'process';
 import IStandardOutput from './../output/IStandardOutput';
 import StandardOutput from './../output/StandardOutput';
 import ContainerModel from './../model/ContainerModel';
+import ConfigModel from './../model/ConfigModel';
 
 class FlowController
 {
@@ -27,10 +28,16 @@ class FlowController
      */
     private standardOutput : IStandardOutput = null;
 
+    /**
+     * Config model
+     * @type {ConfigModel}
+     */
+    private config : ConfigModel = null;
 
     public constructor()
     {
         this.standardOutput = new StandardOutput();
+        this.config = new ConfigModel();
     }
 
     /**
@@ -77,6 +84,16 @@ class FlowController
     }
 
     /**
+     * Gets config
+     * @returns {ConfigModel}
+     * @constructor
+     */
+    get Config() : ConfigModel
+    {
+        return this.config;
+    }
+
+    /**
      * Sets working directory's path
      * @param value
      * @constructor
@@ -98,6 +115,16 @@ class FlowController
         }
 
         this.sourceFileName = value;
+    }
+
+    /**
+     * Sets config
+     * @param value
+     * @constructor
+     */
+    set Config(value : ConfigModel)
+    {
+        this.config = value;
     }
 
     /**

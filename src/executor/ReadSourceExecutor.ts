@@ -38,14 +38,14 @@ class ReadSourceExecutor extends Executor
         let configModelInstance : ConfigModel = null;
 
         try{
-            configModelInstance = ConfigModelConverter.convert(configObject);
+            configModelInstance = ConfigModelConverter.convert(configObject, sender.Container);
         }
         catch(error){
             sender.Output.error("Read config file failed!");
             sender.Output.error(error.message);
         }
 
-
+        sender.Config = configModelInstance;
 
     }
 }

@@ -9,10 +9,11 @@ import SpaceModel from './../model/SpaceModel';
 import ConfigModel from './../model/ConfigModel';
 import CommandModelConverter from './CommandModelConverter';
 import SpaceModelConverter from './SpaceModelConverter';
+import ContainerModel from './../model/ContainerModel';
 
 class ConfigModelConverter
 {
-    public static convert(rawObject : any) : ConfigModel
+    public static convert(rawObject : any, container ?: ContainerModel) : ConfigModel
     {
         /**
          * Initializes a new model of config
@@ -29,13 +30,13 @@ class ConfigModelConverter
          * Converts commands into collection
          * @type {ModelCollection<CommandModel>}
          */
-        let commands : ModelCollection<CommandModel> = CommandModelConverter.convertToModelCollection(rawObject.commands);
+        let commands : ModelCollection<CommandModel> = CommandModelConverter.convertToModelCollection(rawObject.commands, container);
 
         /**
          * Converts spaces into collection
          * @type {ModelCollection<SpaceModel>}
          */
-        let spaces : ModelCollection<SpaceModel> = SpaceModelConverter.convertToModelCollection(rawObject.spaces);
+        let spaces : ModelCollection<SpaceModel> = SpaceModelConverter.convertToModelCollection(rawObject.spaces, container);
 
         config.Commands.merge(commands);
         config.Spaces.merge(spaces);
