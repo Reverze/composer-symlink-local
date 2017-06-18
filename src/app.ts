@@ -17,6 +17,7 @@ import FlagEvent from './event/core/FlagEvent';
 import OptionEvent from './event/core/OptionEvent';
 
 import InitFlagEvent from './event/core/InitFlagEvent';
+import TestFlagEvent from './event/core/TestFlagEvent';
 import PwdOptionEvent from './event/core/PwdOptionEvent';
 import SourceOptionEvent from './event/core/SourceOptionEvent';
 import ReadSourceEvent from './event/core/ReadSourceEvent';
@@ -25,6 +26,7 @@ import ReadSourceEvent from './event/core/ReadSourceEvent';
  * @executors.core
  */
 import InitConfigExecutor from './executor/InitConfigExecutor';
+import TestConfigExecutor from './executor/TestConfigExecutor';
 import CustomPwdExecutor from './executor/CustomPwdExecutor';
 import CustomSourceExecutor from './executor/CustomSourceExecutor';
 import ReadSourceExecutor from './executor/ReadSourceExecutor';
@@ -100,6 +102,7 @@ export default class Application
     public registerEvents()
     {
         EventServer.define<FlagEvent>(InitFlagEvent);
+        EventServer.define<FlagEvent>(TestFlagEvent);
         EventServer.define<OptionEvent>(PwdOptionEvent);
         EventServer.define<OptionEvent>(SourceOptionEvent);
         EventServer.define<Event>(ReadSourceEvent);
@@ -131,6 +134,15 @@ export default class Application
         EventServer.watch<FlagEvent>(InitFlagEvent, (() => {
             let eventListener : EventListener = new EventListener();
             eventListener.Receiver = new InitConfigExecutor().Worker;
+            return eventListener;
+        })());
+
+        /**
+         * Should be executed on '--test'
+         */
+        EventServer.watch<FlagEvent>(TestFlagEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new TestConfigExecutor().Worker;
             return eventListener;
         })());
 
@@ -181,6 +193,13 @@ export default class Application
          * If everything ok, reads config file
          */
         EventServer.trigger<Event>(ReadSourceEvent, this.flow, new EventArgs());
+
+        /**
+         * If user passsed '--test'
+         */
+        if (inputModel.getTestState() === true){
+            EventServer.trigger<FlagEvent>(TestFlagEvent, this.flow, new EventArgs());
+        }
 
     }
 
