@@ -34,7 +34,7 @@ class SpaceModelConverter
             space.Name = rawSpace.name;
             space.DirectoryPath = path.resolve(container ? container.WorkingDirectory : Application.WorkingDirectory, rawSpace.rootDir);
 
-            let map : MapModel = MapModelConverter.convertToMap(rawSpace.map, container);
+            let map : MapModel = MapModelConverter.convertToMap(rawSpace.map, space.DirectoryPath, container);
 
             space.Map = map;
             spaceCollection.push(space);

@@ -16,7 +16,7 @@ class MapModelConverter
      * @param rawNodes
      * @returns {MapModel}
      */
-    public static convertToMap(rawNodes : Array<any>, container ?: ContainerModel) : MapModel
+    public static convertToMap(rawNodes : Array<any>, spacePath : string, container ?: ContainerModel) : MapModel
     {
         let map : MapModel = new MapModel();
 
@@ -24,7 +24,7 @@ class MapModelConverter
             let node : MapNodeModel = new MapNodeModel();
             MapModelConverter.validateRawNode(rawNode);
 
-            node.LinkName = rawNode.linkName;
+            node.LinkName = path.resolve(spacePath, rawNode.linkName);
             node.SourceDirectoryPath = path.resolve(container ? container.WorkingDirectory : Application.WorkingDirectory, rawNode.source);
             map.addNode(node);
         }
