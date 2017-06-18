@@ -21,6 +21,12 @@ class InputModel implements IInputModel
      */
     private pwd : string = null;
 
+    /**
+     * Determines if flag 'test' was activated
+     * @type {boolean}
+     */
+    private test : boolean = false;
+
     public constructor()
     {
 
@@ -42,6 +48,15 @@ class InputModel implements IInputModel
     public setInitState(initState : boolean) : void
     {
         this.init = initState;
+    }
+
+    /**
+     * Sets 'test' state
+     * @param testState
+     */
+    public setTestState(testState : boolean) : void
+    {
+        this.test = testState;
     }
 
     /**
@@ -69,6 +84,15 @@ class InputModel implements IInputModel
     public getInitState() : boolean
     {
         return this.init;
+    }
+
+    /**
+     * Gets 'test' state
+     * @returns {boolean}
+     */
+    public getTestState() : boolean
+    {
+        return this.test;
     }
 
     /**

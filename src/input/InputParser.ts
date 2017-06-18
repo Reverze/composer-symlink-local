@@ -28,6 +28,7 @@ export default class InputParser
         inputModel.setSourceName(data.parsed.source);
         inputModel.setInitState(data.parsed.init);
         inputModel.setPwd(data.parsed.pwd);
+        inputModel.setTestState(data.parsed.test);
 
         return inputModel;
     }
