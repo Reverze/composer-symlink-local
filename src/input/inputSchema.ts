@@ -16,6 +16,10 @@ let inputSchema = {
         value: (value, parsed, tool) => {
             return value === null || value === undefined ? null : value;
         }
+    },
+    test: {
+        type: Boolean,
+        value: false
     }
 };
 
