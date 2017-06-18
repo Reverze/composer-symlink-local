@@ -17,7 +17,7 @@ describe("MapModelConverter Test", () => {
             }
         ];
 
-        let map : MapModel = MapModelConverter.convertToMap(rawNodes);
+        let map : MapModel = MapModelConverter.convertToMap(rawNodes, "/virtual");
 
 
         expect(map.Nodes.Count).to.equal(2);
