@@ -20,6 +20,10 @@ let inputSchema = {
     test: {
         type: Boolean,
         value: false
+    },
+    attach: {
+        type: Boolean,
+        value: false
     }
 };
 

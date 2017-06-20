@@ -27,6 +27,8 @@ class InputModel implements IInputModel
      */
     private test : boolean = false;
 
+    private attach : boolean = false;
+
     public constructor()
     {
 
@@ -57,6 +59,15 @@ class InputModel implements IInputModel
     public setTestState(testState : boolean) : void
     {
         this.test = testState;
+    }
+
+    /**
+     * Sets 'attach' state
+     * @param attachState
+     */
+    public setAttachState(attachState : boolean) : void
+    {
+        this.attach = attachState;
     }
 
     /**
@@ -93,6 +104,15 @@ class InputModel implements IInputModel
     public getTestState() : boolean
     {
         return this.test;
+    }
+
+    /**
+     * Gets 'attach' state
+     * @returns {any}
+     */
+    public getAttachState() : boolean
+    {
+        return this.attach;
     }
 
     /**

@@ -29,6 +29,7 @@ export default class InputParser
         inputModel.setInitState(data.parsed.init);
         inputModel.setPwd(data.parsed.pwd);
         inputModel.setTestState(data.parsed.test);
+        inputModel.setAttachState(data.parsed.attach);
 
         return inputModel;
     }
