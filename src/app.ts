@@ -8,6 +8,8 @@ import EventServer from './event/EventServer';
 import EventListener from './event/EventListener';
 import EventArgs from './event/EventArgs';
 import FlowController from './app/FlowController';
+import CommandContainer from './command/CommandContainer';
+
 
 /**
  * @events.core
@@ -21,6 +23,7 @@ import TestFlagEvent from './event/core/TestFlagEvent';
 import PwdOptionEvent from './event/core/PwdOptionEvent';
 import SourceOptionEvent from './event/core/SourceOptionEvent';
 import ReadSourceEvent from './event/core/ReadSourceEvent';
+import AttachSymlinksFlagEvent from './event/core/AttachSymlinksFlagEvent';
 
 /**
  * @executors.core
@@ -30,12 +33,18 @@ import TestConfigExecutor from './executor/TestConfigExecutor';
 import CustomPwdExecutor from './executor/CustomPwdExecutor';
 import CustomSourceExecutor from './executor/CustomSourceExecutor';
 import ReadSourceExecutor from './executor/ReadSourceExecutor';
+import AttachSymlinksExecutor from './executor/AttachSymlinksExecutor';
 
 /**
  * @events_args.core
  */
 import CustomPwdEventArgs from './event/core/args/CustomPwdEventArgs';
 import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
+
+/**
+ * @commands.core
+ */
+import AttachCommand from "./command/core/AttachCommand";
 
 export default class Application
 {
@@ -96,6 +105,11 @@ export default class Application
         }
     }
 
+    public registerCommands()
+    {
+        CommandContainer.define(new AttachCommand);
+    }
+
     /**
      * Register events
      */
@@ -106,6 +120,7 @@ export default class Application
         EventServer.define<OptionEvent>(PwdOptionEvent);
         EventServer.define<OptionEvent>(SourceOptionEvent);
         EventServer.define<Event>(ReadSourceEvent);
+        EventServer.define<FlagEvent>(AttachSymlinksFlagEvent);
     }
 
     public registerCoreEventWatchers()
@@ -155,6 +170,15 @@ export default class Application
             return eventListener;
         })());
 
+        /**
+         * Should be executed on '--attach'
+         */
+        EventServer.watch<FlagEvent>(AttachSymlinksFlagEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new AttachSymlinksExecutor().Worker;
+            return eventListener;
+        })());
+
     }
 
 
@@ -162,6 +186,7 @@ export default class Application
     {
         this.registerEvents();
         this.registerCoreEventWatchers();
+        this.registerCommands();
 
         let parser : InputParser = new InputParser(args);
         let inputModel : IInputModel = parser.getModel();
@@ -200,6 +225,11 @@ export default class Application
         if (inputModel.getTestState() === true){
             EventServer.trigger<FlagEvent>(TestFlagEvent, this.flow, new EventArgs());
         }
+
+        if (inputModel.getAttachState() === true){
+            EventServer.trigger<FlagEvent>(AttachSymlinksFlagEvent, this.flow, new EventArgs());
+        }
+
 
     }
 
