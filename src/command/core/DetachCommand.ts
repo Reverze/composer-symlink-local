@@ -7,7 +7,7 @@ import Command from './../Command';
 import CommandBuilderArgs from './../CommandBuilderArgs';
 import * as fs from 'fs';
 
-class AttachCommand extends Command
+class DetachCommand extends Command
 {
     public constructor()
     {
@@ -16,7 +16,7 @@ class AttachCommand extends Command
 
     public work(args ?: CommandBuilderArgs)
     {
-        args.Flow.Output.info("Attaching symlinks...");
+        args.Flow.Output.info("Detaching symlinks...");
 
         for(let space of args.Flow.Config.Spaces){
 
@@ -43,15 +43,20 @@ class AttachCommand extends Command
                     let entryStats = fs.lstatSync(node.LinkName);
 
                     if (entryStats.isSymbolicLink()){
+                        if (fs.existsSync(node.LinkName + ".backup")){
+                            fs.unlinkSync(node.LinkName);
+                            fs.renameSync(node.LinkName + ".backup", node.LinkName);
+                        }
+                        else{
+                            args.Flow.Output.warning("The backup was not found! Unlink and empty directory will be created!");
+                            fs.unlinkSync(node.LinkName);
+                            fs.mkdirSync(node.LinkName);
+                        }
+
                         args.Flow.Output.print("        * Symlink already attached. Omitting.");
                     }
                     else{
-
-                        let res = fs.renameSync(node.LinkName, node.LinkName + ".backup");
-
-                        res = fs.symlinkSync(node.SourceDirectoryPath, node.LinkName);
-
-                        args.Flow.Output.print("        * Symlink attached!");
+                        args.Flow.Output.print("        * Symlink is not attached. Omitting.");
                     }
                 }
 
@@ -65,5 +70,5 @@ class AttachCommand extends Command
     }
 }
 
-export default AttachCommand;
+export default DetachCommand;
 
