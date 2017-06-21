@@ -29,6 +29,8 @@ class InputModel implements IInputModel
 
     private attach : boolean = false;
 
+    private detach : boolean = false;
+
     public constructor()
     {
 
@@ -68,6 +70,15 @@ class InputModel implements IInputModel
     public setAttachState(attachState : boolean) : void
     {
         this.attach = attachState;
+    }
+
+    /**
+     * Sets 'detach' state
+     * @param detachState
+     */
+    public setDetachState(detachState : boolean) : void
+    {
+        this.detach = detachState;
     }
 
     /**
@@ -113,6 +124,15 @@ class InputModel implements IInputModel
     public getAttachState() : boolean
     {
         return this.attach;
+    }
+
+    /**
+     * Gets 'detach' state
+     * @returns {boolean}
+     */
+    public getDetachState() : boolean
+    {
+        return this.detach;
     }
 
     /**

@@ -24,6 +24,10 @@ let inputSchema = {
     attach: {
         type: Boolean,
         value: false
+    },
+    detach: {
+        type: Boolean,
+        value: false
     }
 };
 
