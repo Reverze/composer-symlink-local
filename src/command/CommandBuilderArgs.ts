@@ -13,6 +13,12 @@ class CommandBuilderArgs
      */
     private flow : FlowController = null;
 
+    /**
+     *
+     * @type {any}
+     */
+    private parameters : any  = null;
+
     public constructor()
     {
 
@@ -26,6 +32,26 @@ class CommandBuilderArgs
     get Flow() : FlowController
     {
         return this.flow;
+    }
+
+    /**
+     *
+     * @returns {any}
+     * @constructor
+     */
+    get Parameters() : any
+    {
+        return this.parameters;
+    }
+
+    /**
+     *
+     * @param value
+     * @constructor
+     */
+    set Parameters(value : any)
+    {
+        this.parameters = value;
     }
 
     /**
