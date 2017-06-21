@@ -24,6 +24,7 @@ import PwdOptionEvent from './event/core/PwdOptionEvent';
 import SourceOptionEvent from './event/core/SourceOptionEvent';
 import ReadSourceEvent from './event/core/ReadSourceEvent';
 import AttachSymlinksFlagEvent from './event/core/AttachSymlinksFlagEvent';
+import DetachSymlinksFlagEvent from './event/core/DetachSymlinksFlagEvent';
 
 /**
  * @executors.core
@@ -34,6 +35,7 @@ import CustomPwdExecutor from './executor/CustomPwdExecutor';
 import CustomSourceExecutor from './executor/CustomSourceExecutor';
 import ReadSourceExecutor from './executor/ReadSourceExecutor';
 import AttachSymlinksExecutor from './executor/AttachSymlinksExecutor';
+import DetachSymlinksExecutor from './executor/DetachSymlinksExecutor';
 
 /**
  * @events_args.core
@@ -45,6 +47,7 @@ import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
  * @commands.core
  */
 import AttachCommand from "./command/core/AttachCommand";
+import DetachCommand from "./command/core/DetachCommand";
 
 export default class Application
 {
@@ -108,6 +111,7 @@ export default class Application
     public registerCommands()
     {
         CommandContainer.define(new AttachCommand);
+        CommandContainer.define(new DetachCommand);
     }
 
     /**
@@ -121,6 +125,7 @@ export default class Application
         EventServer.define<OptionEvent>(SourceOptionEvent);
         EventServer.define<Event>(ReadSourceEvent);
         EventServer.define<FlagEvent>(AttachSymlinksFlagEvent);
+        EventServer.define<FlagEvent>(DetachSymlinksFlagEvent);
     }
 
     public registerCoreEventWatchers()
@@ -179,6 +184,15 @@ export default class Application
             return eventListener;
         })());
 
+        /**
+         * Should be executed on '--detach'
+         */
+        EventServer.watch<FlagEvent>(DetachSymlinksFlagEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = new DetachSymlinksExecutor().Worker;
+            return eventListener;
+        })());
+
     }
 
 
@@ -228,6 +242,10 @@ export default class Application
 
         if (inputModel.getAttachState() === true){
             EventServer.trigger<FlagEvent>(AttachSymlinksFlagEvent, this.flow, new EventArgs());
+        }
+
+        if (inputModel.getDetachState() === true){
+            EventServer.trigger<FlagEvent>(DetachSymlinksFlagEvent, this.flow, new EventArgs());
         }
 
 

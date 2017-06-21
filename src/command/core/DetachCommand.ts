@@ -11,7 +11,7 @@ class DetachCommand extends Command
 {
     public constructor()
     {
-        super('attach');
+        super('detach');
     }
 
     public work(args ?: CommandBuilderArgs)
@@ -53,7 +53,7 @@ class DetachCommand extends Command
                             fs.mkdirSync(node.LinkName);
                         }
 
-                        args.Flow.Output.print("        * Symlink already attached. Omitting.");
+                        args.Flow.Output.print("        * Symlink has been detached.");
                     }
                     else{
                         args.Flow.Output.print("        * Symlink is not attached. Omitting.");
