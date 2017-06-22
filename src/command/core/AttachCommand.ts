@@ -18,7 +18,15 @@ class AttachCommand extends Command
     {
         args.Flow.Output.info("Attaching symlinks...");
 
+        let omitSpaces : boolean = args.Parameters.length > 0;
+
+
         for(let space of args.Flow.Config.Spaces){
+            if (omitSpaces){
+                if (args.Parameters.indexOf(space.Name) < 0){
+                    continue;
+                }
+            }
 
             args.Flow.Output.print("    #" + space.Name);
             args.Flow.Output.notice("    Root directory: '" + space.DirectoryPath + "'");
