@@ -4,7 +4,7 @@
  */
 "use strict";
 import Executor from './Executor';
-import EventArgs from './../event/EventArgs';
+import AttachSymlinksEventArgs from './../event/core/args/AttachSymlinksEventArgs';
 import FlowController from './../app/FlowController';
 import CommandContainer from './../command/CommandContainer';
 import AttachCommand from './../command/core/AttachCommand';
@@ -17,10 +17,12 @@ class AttachSymlinksExecutor extends Executor
         super();
     }
 
-    public work(sender : FlowController, args : EventArgs)
+    public work(sender : FlowController, args : AttachSymlinksEventArgs)
     {
         let commandArgs : CommandBuilderArgs = new CommandBuilderArgs();
         commandArgs.Flow = sender;
+        commandArgs.Parameters = args.Spaces;
+
 
         CommandContainer.execute(new AttachCommand().Name, commandArgs);
     }
