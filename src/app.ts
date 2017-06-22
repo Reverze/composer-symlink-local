@@ -42,12 +42,14 @@ import DetachSymlinksExecutor from './executor/DetachSymlinksExecutor';
  */
 import CustomPwdEventArgs from './event/core/args/CustomPwdEventArgs';
 import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
+import AttachSymlinksEventArgs from './event/core/args/AttachSymlinksEventArgs';
 
 /**
  * @commands.core
  */
 import AttachCommand from "./command/core/AttachCommand";
 import DetachCommand from "./command/core/DetachCommand";
+import EvalCommand from "./command/core/EvalCommand";
 
 export default class Application
 {
@@ -112,6 +114,7 @@ export default class Application
     {
         CommandContainer.define(new AttachCommand);
         CommandContainer.define(new DetachCommand);
+        CommandContainer.define(new EvalCommand);
     }
 
     /**
@@ -240,8 +243,12 @@ export default class Application
             EventServer.trigger<FlagEvent>(TestFlagEvent, this.flow, new EventArgs());
         }
 
-        if (inputModel.getAttachState() === true){
-            EventServer.trigger<FlagEvent>(AttachSymlinksFlagEvent, this.flow, new EventArgs());
+        if (inputModel.getAttachState() !== false){
+            let args : AttachSymlinksEventArgs = new AttachSymlinksEventArgs();
+            args.Spaces = inputModel.getAttachState() === 'true' ? [] :
+                (inputModel.getAttachState() as string).trim().split(',');
+
+            EventServer.trigger<FlagEvent>(AttachSymlinksFlagEvent, this.flow, args);
         }
 
         if (inputModel.getDetachState() === true){
