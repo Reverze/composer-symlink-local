@@ -22,7 +22,7 @@ let inputSchema = {
         value: false
     },
     attach: {
-        type: Boolean,
+        type: [ String, Boolean ],
         value: false
     },
     detach: {
