@@ -27,6 +27,12 @@ class InputModel implements IInputModel
      */
     private test : boolean = false;
 
+    /**
+     * Parameters for command 'eval'
+     * @type {any}
+     */
+    private eval : string|null = null;
+
     private attach : string|boolean = false;
 
     private detach : string|boolean = false;
@@ -91,6 +97,15 @@ class InputModel implements IInputModel
     }
 
     /**
+     * Sets input for command 'eval'
+     * @param evalInput
+     */
+    public setEval(evalInput : string|null) : void
+    {
+        this.eval = evalInput;
+    }
+
+    /**
      * Gets file's name
      * @returns {string}
      */
@@ -142,6 +157,15 @@ class InputModel implements IInputModel
     public getPwd() : string|null
     {
         return this.pwd;
+    }
+
+    /**
+     * Gets input for command 'eval'
+     * @returns {string|null}
+     */
+    public getEval() : string|null
+    {
+        return this.eval;
     }
 }
 
