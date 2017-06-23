@@ -5,9 +5,7 @@
 "use strict";
 import OptionEvent from './OptionEvent';
 
-/**
- * Event called on argument '--eval'
- */
+
 class EvalOptionEvent extends OptionEvent
 {
     public constructor()
