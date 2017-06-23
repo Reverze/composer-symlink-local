@@ -5,10 +5,14 @@
 "use strict";
 
 let configSchema = {
+    declare: {
+        my_projects_path: "/home/me/my_projects/libs",
+        test_app_path: "/home/me/my_projects/my_test_app"
+    },
     commands: {
         update: {
             $detachSymlinks: "$space",
-            $eval: "composer update",
+            $eval: [ "composer update", "ls -l $my_projects_path" ],
             $attachSymlinks: "$space"
         },
         install: {
@@ -20,11 +24,11 @@ let configSchema = {
     spaces: [
         {
             name: "example-space",
-            rootDir: "./vendor/example",
+            rootDir: "$test_app_path/vendor/me",
             map: [
                 {
-                    source: "~/my_projects/packages/example-package-one",
-                    linkName: "me/package-one"
+                    source: "$my_projects_path/packages/example-package-one",
+                    linkName: "package-one"
                 }
             ]
         }
