@@ -4,7 +4,7 @@
  */
 "use strict";
 import Executor from './Executor';
-import EventArgs from './../event/EventArgs';
+import DetachSymlinksEventArgs from './../event/core/args/DetachSymlinksEventArgs';
 import FlowController from './../app/FlowController';
 import CommandContainer from './../command/CommandContainer';
 import DetachCommand from './../command/core/DetachCommand';
@@ -17,10 +17,11 @@ class DetachSymlinksExecutor extends Executor
         super();
     }
 
-    public work(sender : FlowController, args : EventArgs)
+    public work(sender : FlowController, args : DetachSymlinksEventArgs)
     {
         let commandArgs : CommandBuilderArgs = new CommandBuilderArgs();
         commandArgs.Flow = sender;
+        commandArgs.Parameters = args.Spaces;
 
         CommandContainer.execute(new DetachCommand().Name, commandArgs);
     }
