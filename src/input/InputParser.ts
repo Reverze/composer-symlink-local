@@ -31,6 +31,7 @@ export default class InputParser
         inputModel.setTestState(data.parsed.test);
         inputModel.setAttachState(data.parsed.attach);
         inputModel.setDetachState(data.parsed.detach);
+        inputModel.setEval(data.parsed.eval);
 
         return inputModel;
     }

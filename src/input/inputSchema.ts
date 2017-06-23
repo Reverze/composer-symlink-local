@@ -28,6 +28,12 @@ let inputSchema = {
     detach: {
         type: Boolean,
         value: false
+    },
+    eval: {
+        type: String,
+        value: (value, parsed, tool) => {
+            return !value ? null : value;
+        }
     }
 };
 
