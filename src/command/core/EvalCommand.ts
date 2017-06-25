@@ -7,6 +7,9 @@ import Command from './../Command';
 import CommandBuilderArgs from './../CommandBuilderArgs';
 import * as process from 'process';
 
+/**
+ * This command evaluates processes
+ */
 class EvalCommand extends Command
 {
     public constructor()

@@ -25,6 +25,7 @@ import SourceOptionEvent from './event/core/SourceOptionEvent';
 import ReadSourceEvent from './event/core/ReadSourceEvent';
 import AttachSymlinksFlagEvent from './event/core/AttachSymlinksFlagEvent';
 import DetachSymlinksFlagEvent from './event/core/DetachSymlinksFlagEvent';
+import EvalOptionEvent from './event/core/EvalOptionEvent';
 
 /**
  * @executors.core
@@ -36,6 +37,7 @@ import CustomSourceExecutor from './executor/CustomSourceExecutor';
 import ReadSourceExecutor from './executor/ReadSourceExecutor';
 import AttachSymlinksExecutor from './executor/AttachSymlinksExecutor';
 import DetachSymlinksExecutor from './executor/DetachSymlinksExecutor';
+import EvalExecutor from './executor/EvalExecutor';
 
 /**
  * @events_args.core
@@ -43,6 +45,8 @@ import DetachSymlinksExecutor from './executor/DetachSymlinksExecutor';
 import CustomPwdEventArgs from './event/core/args/CustomPwdEventArgs';
 import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
 import AttachSymlinksEventArgs from './event/core/args/AttachSymlinksEventArgs';
+import DetachSymlinksEventArgs from './event/core/args/DetachSymlinksEventArgs';
+import EvalEventArgs from './event/core/args/EvalEventArgs';
 
 /**
  * @commands.core
@@ -129,6 +133,7 @@ export default class Application
         EventServer.define<Event>(ReadSourceEvent);
         EventServer.define<FlagEvent>(AttachSymlinksFlagEvent);
         EventServer.define<FlagEvent>(DetachSymlinksFlagEvent);
+        EventServer.define<OptionEvent>(EvalOptionEvent);
     }
 
     public registerCoreEventWatchers()
@@ -196,6 +201,12 @@ export default class Application
             return eventListener;
         })());
 
+        EventServer.watch<OptionEvent>(EvalOptionEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = (sender, args) => { new EvalExecutor().work(sender, args) };
+            return eventListener;
+        })());
+
     }
 
 
@@ -252,7 +263,11 @@ export default class Application
         }
 
         if (inputModel.getDetachState() === true){
-            EventServer.trigger<FlagEvent>(DetachSymlinksFlagEvent, this.flow, new EventArgs());
+            let args : DetachSymlinksEventArgs = new DetachSymlinksEventArgs();
+            args.Spaces = inputModel.getDetachState() === 'true' ? [] :
+                (inputModel.getDetachState() as string).trim().split(',');
+
+            EventServer.trigger<FlagEvent>(DetachSymlinksFlagEvent, this.flow, args);
         }
 
 
