@@ -29,9 +29,15 @@ class InputModel implements IInputModel
 
     /**
      * Parameters for command 'eval'
-     * @type {any}
+     * @type {string|null}
      */
     private eval : string|null = null;
+
+    /**
+     * Parameters for command 'run'
+     * @type {string|null}
+     */
+    private run : string|null = null;
 
     private attach : string|boolean = false;
 
@@ -106,6 +112,15 @@ class InputModel implements IInputModel
     }
 
     /**
+     * Sets input for command 'run'
+     * @param runInput
+     */
+    public setRun(runInput : string|null) : void
+    {
+        this.run = runInput;
+    }
+
+    /**
      * Gets file's name
      * @returns {string}
      */
@@ -166,6 +181,15 @@ class InputModel implements IInputModel
     public getEval() : string|null
     {
         return this.eval;
+    }
+
+    /**
+     * Gets input for command 'run'
+     * @returns {string|null}
+     */
+    public getRun() : string|null
+    {
+        return this.run;
     }
 }
 
