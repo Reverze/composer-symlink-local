@@ -19,6 +19,10 @@ class EvalCommand extends Command
 
     public work(args ?: CommandBuilderArgs)
     {
+        /**
+         * Temporary!!!
+         * @TODO exception handling etc..
+         */
         for(let command of args.Parameters){
             args.Flow.Output.info("Executing:  '" + command + "'");
             let result : any = child_process.execSync(command);
