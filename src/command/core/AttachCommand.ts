@@ -14,7 +14,7 @@ class AttachCommand extends Command
         super('attach');
     }
 
-    public parseArgs(input : string) : CommandBuilderArgs
+    public static createBuilderArgs(input : string) : CommandBuilderArgs
     {
         let args : CommandBuilderArgs = new CommandBuilderArgs();
 
@@ -31,6 +31,11 @@ class AttachCommand extends Command
         }
 
         return args;
+    }
+
+    public parseArgs(input : string) : CommandBuilderArgs
+    {
+        return AttachCommand.createBuilderArgs(input);
     }
 
     public work(args ?: CommandBuilderArgs)

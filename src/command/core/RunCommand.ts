@@ -17,7 +17,7 @@ class RunCommand extends Command
         super("run");
     }
 
-    public parseArgs(input : string) : CommandBuilderArgs
+    public static createBuilderArgs(input : string) : CommandBuilderArgs
     {
         let args : CommandBuilderArgs = new CommandBuilderArgs();
 
@@ -29,6 +29,11 @@ class RunCommand extends Command
         }
 
         return args;
+    }
+
+    public parseArgs(input : string) : CommandBuilderArgs
+    {
+        return RunCommand.createBuilderArgs(input);
     }
 
     public work(args ?: CommandBuilderArgs) : void

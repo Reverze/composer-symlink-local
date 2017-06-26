@@ -14,7 +14,7 @@ class DetachCommand extends Command
         super('detach');
     }
 
-    public parseArgs(input : string) : CommandBuilderArgs
+    public static createBuilderArgs(input : string) : CommandBuilderArgs
     {
         let args : CommandBuilderArgs = new CommandBuilderArgs();
 
@@ -31,6 +31,11 @@ class DetachCommand extends Command
         }
 
         return args;
+    }
+
+    public parseArgs(input : string) : CommandBuilderArgs
+    {
+        return DetachCommand.createBuilderArgs(input);
     }
 
     public work(args ?: CommandBuilderArgs)

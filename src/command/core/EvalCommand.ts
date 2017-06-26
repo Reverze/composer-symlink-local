@@ -17,7 +17,7 @@ class EvalCommand extends Command
         super("eval");
     }
 
-    public parseArgs(input : string) : CommandBuilderArgs
+    public static createBuilderArgs(input : string) : CommandBuilderArgs
     {
         let args : CommandBuilderArgs = new CommandBuilderArgs();
 
@@ -29,6 +29,11 @@ class EvalCommand extends Command
         }
 
         return args;
+    }
+
+    public parseArgs(input : string) : CommandBuilderArgs
+    {
+        return EvalCommand.createBuilderArgs(input);
     }
 
     public work(args ?: CommandBuilderArgs)
