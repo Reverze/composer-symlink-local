@@ -23,10 +23,9 @@ abstract class Command
         return this.name;
     }
 
-    public work(args ?: CommandBuilderArgs)
-    {
+    public abstract parseArgs(input : string) : CommandBuilderArgs;
 
-    }
+    public abstract work(args ?: CommandBuilderArgs);
 }
 
 export default Command;

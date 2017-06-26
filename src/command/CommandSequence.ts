@@ -7,6 +7,7 @@ import ICommandSequence from './ICommandSequence';
 import Command from './Command';
 import CommandContainer from './CommandContainer';
 import CommandBuilderArgs from './CommandBuilderArgs';
+import CommandMetaData from './CommandMetaData';
 
 class CommandSequence implements ICommandSequence
 {
@@ -18,15 +19,10 @@ class CommandSequence implements ICommandSequence
 
     /**
      * Commands at sequence
-     * @type {Command[]}
+     * @type {CommandMetaData[]}
      */
-    private commands : Array<Command> = new Array<Command>();
+    private commands : Array<CommandMetaData> = new Array<CommandMetaData>();
 
-    /**
-     *
-     * @type {any}
-     */
-    private args : CommandBuilderArgs = null;
 
     public constructor()
     {
@@ -39,7 +35,7 @@ class CommandSequence implements ICommandSequence
      * Adds command
      * @param command
      */
-    public addCommand(command : Command) : void
+    public addCommand(command : CommandMetaData) : void
     {
         this.commands.push(command);
     }
@@ -54,22 +50,13 @@ class CommandSequence implements ICommandSequence
         return this.name;
     }
 
-    /**
-     *
-     * @returns {CommandBuilderArgs}
-     * @constructor
-     */
-    get Args() : CommandBuilderArgs
-    {
-        return this.args;
-    }
 
     /**
      * Gets commands at sequence
-     * @returns {Array<Command>}
+     * @returns {Array<CommandMetaData>}
      * @constructor
      */
-    get Commands() : Array<Command>
+    get Commands() : Array<CommandMetaData>
     {
         return this.commands;
     }
@@ -88,20 +75,11 @@ class CommandSequence implements ICommandSequence
         this.name = value;
     }
 
-    /**
-     *
-     * @param value
-     * @constructor
-     */
-    set Args(value : CommandBuilderArgs)
-    {
-        this.args = value;
-    }
 
     public executeAll()
     {
-        for(let command of this.commands){
-            CommandContainer.execute(command.Name, this.args);
+        for(let commandMetaData of this.commands){
+            CommandContainer.execute(commandMetaData.Instance.Name, commandMetaData.Args);
         }
     }
 

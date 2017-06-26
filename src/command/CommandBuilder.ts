@@ -10,6 +10,7 @@ import CommandSequence from './CommandSequence';
 import CommandBuilderArgs from './CommandBuilderArgs';
 import Command from './Command';
 import CommandContainer from './CommandContainer';
+import CommandMetaData from './CommandMetaData';
 
 abstract class CommandBuilder
 {
@@ -24,18 +25,23 @@ abstract class CommandBuilder
         let sequence : CommandSequence = new CommandSequence();
 
         sequence.Name = commandModel.Name;
-        sequence.Args = args;
 
         for(let sequenceEntry of commandModel.Sequences){
-            if (!CommandContainer.isDefined(sequenceEntry.ExecutorName)){
+            let executorName = sequenceEntry.ExecutorName.replace("$", "");
+
+            if (!CommandContainer.isDefined(executorName)){
                 throw new Error("Executor (command) '" + sequenceEntry.ExecutorName + "' is not supported!");
             }
 
-            let command : Command = CommandContainer.getCommand(sequenceEntry.ExecutorName);
+            let command : Command = CommandContainer.getCommand(executorName);
 
-            sequence.addCommand(command);
+            let c_args : CommandBuilderArgs = command.parseArgs(sequenceEntry.ExecutorParameters);
+            c_args.Flow = args.Flow;
+
+            let metaData : CommandMetaData = new CommandMetaData(command, c_args);
+
+            sequence.addCommand(metaData);
         }
-
 
         return sequence;
     }
