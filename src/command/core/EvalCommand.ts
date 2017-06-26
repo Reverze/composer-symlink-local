@@ -5,7 +5,7 @@
 "use strict";
 import Command from './../Command';
 import CommandBuilderArgs from './../CommandBuilderArgs';
-import * as process from 'process';
+import * as child_process from 'child_process';
 
 /**
  * This command evaluates processes
@@ -19,7 +19,11 @@ class EvalCommand extends Command
 
     public work(args ?: CommandBuilderArgs)
     {
-
+        for(let command of args.Parameters){
+            args.Flow.Output.info("Executing:  '" + command + "'");
+            let result : any = child_process.execSync(command);
+            console.log(result.toString('utf8'));
+        }
     }
 }
 
