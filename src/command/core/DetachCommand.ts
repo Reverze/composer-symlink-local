@@ -14,6 +14,25 @@ class DetachCommand extends Command
         super('detach');
     }
 
+    public parseArgs(input : string) : CommandBuilderArgs
+    {
+        let args : CommandBuilderArgs = new CommandBuilderArgs();
+
+        if (typeof input === 'string'){
+            if (input.length <= 0 || input.trim() === '$space'){
+                args.Parameters = [];
+            }
+            else{
+                args.Parameters = input.replace("$space", "").trim().split(',');
+            }
+        }
+        else{
+            args.Parameters = [];
+        }
+
+        return args;
+    }
+
     public work(args ?: CommandBuilderArgs)
     {
         args.Flow.Output.info("Detaching symlinks...");
