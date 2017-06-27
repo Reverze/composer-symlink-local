@@ -26,6 +26,7 @@ import ReadSourceEvent from './event/core/ReadSourceEvent';
 import AttachSymlinksFlagEvent from './event/core/AttachSymlinksFlagEvent';
 import DetachSymlinksFlagEvent from './event/core/DetachSymlinksFlagEvent';
 import EvalOptionEvent from './event/core/EvalOptionEvent';
+import RunOptionEvent from './event/core/RunOptionEvent';
 
 /**
  * @executors.core
@@ -38,6 +39,7 @@ import ReadSourceExecutor from './executor/ReadSourceExecutor';
 import AttachSymlinksExecutor from './executor/AttachSymlinksExecutor';
 import DetachSymlinksExecutor from './executor/DetachSymlinksExecutor';
 import EvalExecutor from './executor/EvalExecutor';
+import RunExecutor from './executor/RunExecutor';
 
 /**
  * @events_args.core
@@ -47,6 +49,7 @@ import CustomSourceEventArgs from './event/core/args/CustomSourceEventArgs';
 import AttachSymlinksEventArgs from './event/core/args/AttachSymlinksEventArgs';
 import DetachSymlinksEventArgs from './event/core/args/DetachSymlinksEventArgs';
 import EvalEventArgs from './event/core/args/EvalEventArgs';
+import RunEventArgs from './event/core/args/RunEventArgs';
 
 /**
  * @commands.core
@@ -54,6 +57,7 @@ import EvalEventArgs from './event/core/args/EvalEventArgs';
 import AttachCommand from "./command/core/AttachCommand";
 import DetachCommand from "./command/core/DetachCommand";
 import EvalCommand from "./command/core/EvalCommand";
+import RunCommand from "./command/core/RunCommand";
 
 export default class Application
 {
@@ -119,6 +123,7 @@ export default class Application
         CommandContainer.define(new AttachCommand);
         CommandContainer.define(new DetachCommand);
         CommandContainer.define(new EvalCommand);
+        CommandContainer.define(new RunCommand);
     }
 
     /**
@@ -134,6 +139,7 @@ export default class Application
         EventServer.define<FlagEvent>(AttachSymlinksFlagEvent);
         EventServer.define<FlagEvent>(DetachSymlinksFlagEvent);
         EventServer.define<OptionEvent>(EvalOptionEvent);
+        EventServer.define<OptionEvent>(RunOptionEvent);
     }
 
     public registerCoreEventWatchers()
@@ -143,7 +149,7 @@ export default class Application
          */
         EventServer.watch<OptionEvent>(PwdOptionEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new CustomPwdExecutor().Worker;
+            eventListener.Receiver = (sender,args) => { new CustomPwdExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -152,7 +158,7 @@ export default class Application
          */
         EventServer.watch<OptionEvent>(SourceOptionEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new CustomSourceExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new CustomSourceExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -161,7 +167,7 @@ export default class Application
          */
         EventServer.watch<FlagEvent>(InitFlagEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new InitConfigExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new InitConfigExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -170,7 +176,7 @@ export default class Application
          */
         EventServer.watch<FlagEvent>(TestFlagEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new TestConfigExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new TestConfigExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -179,7 +185,7 @@ export default class Application
          */
         EventServer.watch<Event>(ReadSourceEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new ReadSourceExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new ReadSourceExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -188,7 +194,7 @@ export default class Application
          */
         EventServer.watch<FlagEvent>(AttachSymlinksFlagEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new AttachSymlinksExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new AttachSymlinksExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -197,13 +203,25 @@ export default class Application
          */
         EventServer.watch<FlagEvent>(DetachSymlinksFlagEvent, (() => {
             let eventListener : EventListener = new EventListener();
-            eventListener.Receiver = new DetachSymlinksExecutor().Worker;
+            eventListener.Receiver = (sender, args) => { new DetachSymlinksExecutor().work(sender, args)  };
             return eventListener;
         })());
 
+        /**
+         * Should be executed on '--eval'
+         */
         EventServer.watch<OptionEvent>(EvalOptionEvent, (() => {
             let eventListener : EventListener = new EventListener();
             eventListener.Receiver = (sender, args) => { new EvalExecutor().work(sender, args) };
+            return eventListener;
+        })());
+
+        /**
+         * Should be executed on '--run'
+         */
+        EventServer.watch<OptionEvent>(RunOptionEvent, (() => {
+            let eventListener : EventListener = new EventListener();
+            eventListener.Receiver = (sender, args) => { new RunExecutor().work(sender, args) };
             return eventListener;
         })());
 
@@ -256,20 +274,34 @@ export default class Application
 
         if (inputModel.getAttachState() !== false){
             let args : AttachSymlinksEventArgs = new AttachSymlinksEventArgs();
-            args.Spaces = inputModel.getAttachState() === 'true' ? [] :
-                (inputModel.getAttachState() as string).trim().split(',');
+            args.Spaces = AttachCommand.createBuilderArgs((inputModel.getAttachState() === 'true' ?
+                "" : inputModel.getAttachState()) as string).Parameters;
 
             EventServer.trigger<FlagEvent>(AttachSymlinksFlagEvent, this.flow, args);
         }
 
         if (inputModel.getDetachState() === true){
             let args : DetachSymlinksEventArgs = new DetachSymlinksEventArgs();
-            args.Spaces = inputModel.getDetachState() === 'true' ? [] :
-                (inputModel.getDetachState() as string).trim().split(',');
+            args.Spaces = DetachCommand.createBuilderArgs((inputModel.getDetachState() === 'true' ?
+                "" : inputModel.getDetachState()) as string).Parameters;
 
             EventServer.trigger<FlagEvent>(DetachSymlinksFlagEvent, this.flow, args);
         }
 
+        if (inputModel.getEval() !== null){
+            let args : EvalEventArgs = new EvalEventArgs();
+            args.Parameters = EvalCommand.createBuilderArgs(inputModel.getEval()).Parameters;
+
+            EventServer.trigger<OptionEvent>(EvalOptionEvent, this.flow, args);
+        }
+
+        if (inputModel.getRun() !== null){
+            let args : RunEventArgs = new RunEventArgs();
+            args.Parameters = RunCommand.createBuilderArgs((inputModel.getRun() === 'true' ?
+                "" : inputModel.getRun()) as string).Parameters;
+
+            EventServer.trigger<OptionEvent>(RunOptionEvent, this.flow, args);
+        }
 
     }
 
