@@ -22,7 +22,12 @@ class RunCommand extends Command
         let args : CommandBuilderArgs = new CommandBuilderArgs();
 
         if (typeof input === 'string'){
-            args.Parameters = input.trim().split(';');
+            if (input.length <= 0){
+                args.Parameters = [];
+            }
+            else{
+                args.Parameters = input.trim().split(';');
+            }
         }
         else{
             args.Parameters = [];
@@ -51,9 +56,12 @@ class RunCommand extends Command
          */
         let selectedToRun : Array<string> = args.Parameters;
 
+
         let toOmit : boolean = selectedToRun.length > 0;
 
         for (let command of commands){
+            args.Flow.Output.info("Executing sequence '" + command.Name + "'");
+
             if (toOmit){
                 if (selectedToRun.indexOf(command.Name) < 0){
                     continue;
