@@ -6,9 +6,11 @@
 import ModelCollection from './../model/collection/ModelCollection';
 import CommandModel from './../model/CommandModel';
 import SpaceModel from './../model/SpaceModel';
+import DeclareModel from './../model/DeclareModel';
 import ConfigModel from './../model/ConfigModel';
 import CommandModelConverter from './CommandModelConverter';
 import SpaceModelConverter from './SpaceModelConverter';
+import DeclareModelConverter from './DeclareModelConverter';
 import ContainerModel from './../model/ContainerModel';
 
 class ConfigModelConverter
@@ -25,6 +27,10 @@ class ConfigModelConverter
          * Validates raw object
          */
         this.validateRawObject(rawObject);
+
+        let declareModel : DeclareModel = DeclareModelConverter.convert(rawObject.declare
+            ? rawObject.declare : {}, container);
+        config.Declares = declareModel;
 
         /**
          * Converts commands into collection
