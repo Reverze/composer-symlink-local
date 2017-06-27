@@ -5,10 +5,16 @@
 "use strict";
 import CommandModel from './CommandModel';
 import SpaceModel from './SpaceModel';
+import DeclareModel from './DeclareModel';
 import ModelCollection from './collection/ModelCollection';
 
 class ConfigModel
 {
+    /**
+     * Stores declared variables
+     * @type {DeclareModel}
+     */
+    private declare : DeclareModel = new DeclareModel();
     /**
      * Stores defiend commands
      * @type {ModelCollection<CommandModel>}
@@ -24,6 +30,16 @@ class ConfigModel
     public constructor()
     {
 
+    }
+
+    /**
+     *
+     * @returns {DeclareModel}
+     * @constructor
+     */
+    get Declares() : DeclareModel
+    {
+        return this.declare;
     }
 
     /**
@@ -44,6 +60,11 @@ class ConfigModel
     get Spaces() : ModelCollection<SpaceModel>
     {
         return this.spaces;
+    }
+
+    set Declares(value : DeclareModel)
+    {
+        this.declare = value;
     }
 
     /**
@@ -85,6 +106,8 @@ class ConfigModel
             this.spaces.push(space);
         }
     }
+
+
 
 }
 
