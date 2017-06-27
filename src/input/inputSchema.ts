@@ -36,10 +36,8 @@ let inputSchema = {
         }
     },
     run: {
-        type: String,
-        value: (value, parsed, tool) => {
-            return !value ? null : value;
-        }
+        type: [ String, Boolean ],
+        value: false
     }
 };
 
